@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LuzMérida · Precio de la luz hoy</title>
+  <meta name="description"
+    content="Monitor de precios de la luz por horas en Mérida. Datos oficiales PVPC actualizados diariamente para el ahorro en el hogar." />
+  <link rel="icon" type="image/png"
+    href="https://merida.es/wp-content/uploads/2021/06/xcropped-favicon-32x32.png.pagespeed.ic.4twhV4Os1c.png" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+  <style>
+    /* ── RESET & TOKENS ── */
+    :root {
+      --bg: #f8f9fa;
+      --surface: #ffffff;
+      --border: #e5e7eb;
+      --primary: #111827;
+      --secondary: #6b7280;
+      --accent: #b48e4b; /* Dorado Mérida */
+      --clr-low: #16a34a;
+      --clr-mid: #d97706;
+      --clr-high: #dc2626;
+      --radius: 12px;
+      --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+      --shadow-premium: 0 10px 15px -3px rgb(0 0 0 / 0.05), 0 4px 6px -4px rgb(0 0 0 / 0.05);
+      --max-w: 1100px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--primary);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── HEADER ── */
+    .site-header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 500;
+    }
+
+    .header-inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: flex;
+      flex-direction: column;
+      text-decoration: none;
+      color: inherit;
+      line-height: 1.1;
+    }
+
+    .brand-xyz {
+      font-size: .65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .2em;
+      color: var(--accent);
+    }
+
+    .brand-title {
+      font-size: 1.1rem;
+      font-weight: 800;
+      letter-spacing: -.02em;
+    }
+
+    .brand-title em {
+      font-style: normal;
+      font-weight: 400;
+      color: var(--secondary);
+    }
+
+    .nav-links { display: flex; gap: 1.25rem; }
+    .nav-links a {
+      font-size: .8rem;
+      font-weight: 600;
+      text-decoration: none;
+      color: var(--secondary);
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--primary); }
+
+    /* ── HERO ── */
+    .hero-section {
+      padding: 3rem 1.5rem 2rem;
+      max-width: var(--max-w);
+      margin: 0 auto;
+      text-align: left;
+    }
+
+    .hero-eyebrow {
+      font-size: .75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .15em;
+      color: var(--accent);
+      margin-bottom: .75rem;
+    }
+
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.5rem, 8vw, 4rem);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      color: var(--primary);
+      margin-bottom: 1rem;
+    }
+
+    .hero-title span {
+      font-style: italic;
+      color: var(--accent);
+      font-weight: 400;
+    }
+
+    .hero-desc {
+      font-size: 1.1rem;
+      color: var(--secondary);
+      max-width: 650px;
+      font-weight: 300;
+    }
+
+    /* ── DASHBOARD ── */
+    .main-grid {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 1.5rem 4rem;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .kpi-card {
+      background: var(--surface);
+      padding: 1.5rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .kpi-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-premium);
+    }
+
+    .kpi-card.highlight {
+      border-left: 4px solid var(--accent);
+    }
+
+    .kpi-label {
+      font-size: .65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: var(--secondary);
+      margin-bottom: .25rem;
+    }
+
+    .kpi-val {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .kpi-val sub {
+      font-size: .9rem;
+      font-weight: 400;
+      color: var(--secondary);
+      bottom: 0;
+    }
+
+    /* ── CHART ── */
+    .chart-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .chart-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .chart-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+
+    .chart-body {
+      height: 350px;
+      width: 100%;
+    }
+
+    /* ── HOURLY LIST ── */
+    .hours-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .hours-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .hours-table th {
+      background: #fafafa;
+      padding: .75rem 1rem;
+      text-align: left;
+      font-size: .65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: var(--secondary);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .hours-table td {
+      padding: 1rem;
+      border-bottom: 1px solid var(--border);
+      font-size: .95rem;
+    }
+
+    .hour-label { font-weight: 700; color: var(--primary); }
+    
+    .price-tag {
+      font-weight: 600;
+      padding: .25rem .75rem;
+      border-radius: 50px;
+      font-size: .85rem;
+    }
+
+    .price-tag.low { background: #ecfdf5; color: var(--clr-low); }
+    .price-tag.mid { background: #fffbeb; color: var(--clr-mid); }
+    .price-tag.high { background: #fef2f2; color: var(--clr-high); }
+
+    /* ── FOOTER ── */
+    .site-footer {
+      text-align: center;
+      padding: 40px;
+      border-top: 1px solid var(--border);
+      margin-top: 40px;
+      background: var(--surface);
+    }
+
+    .footer-brand {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 15px;
+      display: block;
+    }
+
+    .footer-desc {
+      font-size: 0.85rem;
+      color: var(--secondary);
+      max-width: 700px;
+      margin: 0 auto 20px auto;
+      line-height: 1.6;
+    }
+
+    .footer-credits { font-size: 0.95rem; color: var(--primary); }
+    .footer-credits a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    @media (max-width: 768px) {
+      .hero-section { padding-top: 2rem; }
+      .kpi-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="https://meridaxyz.wordpress.com" class="brand">
+        <span class="brand-xyz">Mérida XYZ</span>
+        <span class="brand-title">Luz<em>Mérida</em></span>
+      </a>
+      <nav class="nav-links">
+        <a href="https://fud0dev.github.io/AgendaMerida/">Noticias</a>
+        <a href="https://fud0dev.github.io/ADMerida/">Deportes</a>
+        <a href="https://fud0dev.github.io/InflacionMerida/">Precios</a>
+        <a href="https://fud0dev.github.io/EmpleoMerida/">Empleo</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero-section">
+    <p class="hero-eyebrow">Monitor Nacional · Mérida XYZ</p>
+    <h1 class="hero-title">Tarifa de <span>Luz</span> Hoy</h1>
+    <p class="hero-desc">Control por horas del precio de la luz (PVPC). Descubre los momentos de mayor ahorro y optimiza
+      tu consumo eléctrico diario.</p>
+  </section>
+
+  <main class="main-grid">
+    
+    <!-- KPIs -->
+    <div class="kpi-row">
+      <div class="kpi-card highlight" id="kpi-now">
+        <div class="kpi-label">Precio ahora mismo</div>
+        <div class="kpi-val" id="val-now">--<sub> €/kWh</sub></div>
+      </div>
+      <div class="kpi-card" id="kpi-min">
+        <div class="kpi-label">Mínimo del día</div>
+        <div class="kpi-val" style="color: var(--clr-low)" id="val-min">--<sub> €/kWh</sub></div>
+      </div>
+      <div class="kpi-card" id="kpi-max">
+        <div class="kpi-label">Máximo del día</div>
+        <div class="kpi-val" style="color: var(--clr-high)" id="val-max">--<sub> €/kWh</sub></div>
+      </div>
+    </div>
+
+    <!-- Chart -->
+    <div class="chart-box">
+      <div class="chart-head">
+        <div class="chart-title">Curva de precios (24h)</div>
+        <div id="update-info" style="font-size: .75rem; color: var(--secondary)">Cargando datos...</div>
+      </div>
+      <div class="chart-body">
+        <canvas id="priceChart"></canvas>
+      </div>
+    </div>
+
+    <!-- Hourly List -->
+    <div class="hours-box">
+      <table class="hours-table">
+        <thead>
+          <tr>
+            <th>Tramo Horario</th>
+            <th>Precio (€/kWh)</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody id="hours-body">
+          <!-- JS Render -->
+        </tbody>
+      </table>
+    </div>
+
+  </main>
+
+  <footer class="site-footer">
+    <span class="footer-brand">Luz Mérida &copy; 2026</span>
+    <p class="footer-desc">
+      Aviso Legal: Proyecto desarrollado exclusivamente con fines educativos y de difusión cultural. Toda la
+      información pertenece a sus respectivos autores y fuentes oficiales (REE/ESIOS).
+    </p>
+    <p class="footer-credits">
+      Creado por <a href="https://github.com/fud0dev" target="_blank">fud0dev</a>
+    </p>
+  </footer>
+
+  <script>
+    let g_data = null;
+    let g_chart = null;
+
+    async function init() {
+      try {
+        const res = await fetch('data/luz.json?' + Date.now());
+        g_data = await res.json();
+        
+        renderDashboard();
+        renderChart();
+      } catch (e) {
+        console.error("Error loading data:", e);
+        document.getElementById('update-info').textContent = "Error al conectar con la base de datos.";
+      }
+    }
+
+    function renderDashboard() {
+      const now = new Date();
+      const currentHour = now.getHours();
+      
+      const prices = g_data.prices;
+      const hourData = prices.find(p => p.hour === currentHour) || prices[0];
+      
+      document.getElementById('val-now').innerHTML = `${hourData.price.toFixed(4)}<sub> €/kWh</sub>`;
+      document.getElementById('val-min').innerHTML = `${g_data.summary.min.toFixed(4)}<sub> €/kWh</sub>`;
+      document.getElementById('val-max').innerHTML = `${g_data.summary.max.toFixed(4)}<sub> €/kWh</sub>`;
+      document.getElementById('update-info').textContent = `Actualizado: ${g_data.last_updated}`;
+
+      const body = document.getElementById('hours-body');
+      body.innerHTML = prices.map(p => {
+        const isCurrent = p.hour === currentHour;
+        const tagCls = p.isLow ? 'low' : p.isHigh ? 'high' : 'mid';
+        const label = p.isLow ? 'Barata' : p.isHigh ? 'Cara' : 'Normal';
+        
+        return `
+          <tr style="${isCurrent ? 'background: rgba(180, 142, 75, 0.05)' : ''}">
+            <td class="hour-label">${p.hour}:00 - ${p.hour}:59 ${isCurrent ? '⭐' : ''}</td>
+            <td style="font-weight: 700">${p.price.toFixed(5)} €</td>
+            <td><span class="price-tag ${tagCls}">${label}</span></td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function renderChart() {
+      const ctx = document.getElementById('priceChart').getContext('2d');
+      const labels = g_data.prices.map(p => `${p.hour}h`);
+      const prices = g_data.prices.map(p => p.price);
+      
+      if (g_chart) g_chart.destroy();
+
+      g_chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels,
+          datasets: [{
+            data: prices,
+            borderColor: '#b48e4b',
+            backgroundColor: 'rgba(180, 142, 75, 0.05)',
+            borderWidth: 3,
+            tension: 0.4,
+            fill: true,
+            pointRadius: 2,
+            pointHoverRadius: 6,
+            pointBackgroundColor: '#b48e4b',
+            pointBorderColor: '#fff',
+            pointBorderWidth: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            y: { 
+              beginAtZero: false,
+              grid: { color: '#f0f0f0' },
+              ticks: { callback: v => v.toFixed(2) + ' €' }
+            },
+            x: { grid: { display: false } }
+          }
+        }
+      });
+    }
+
+    init();
+  </script>
+</body>
+</html>
