@@ -1,0 +1,178 @@
+{
+  "last_updated": "2026-04-15 13:17:20",
+  "prices": [
+    {
+      "hour": 0,
+      "price": 0.08,
+      "isLow": true,
+      "isMid": false,
+      "isHigh": false
+    },
+    {
+      "hour": 1,
+      "price": 0.08,
+      "isLow": true,
+      "isMid": false,
+      "isHigh": false
+    },
+    {
+      "hour": 2,
+      "price": 0.08,
+      "isLow": true,
+      "isMid": false,
+      "isHigh": false
+    },
+    {
+      "hour": 3,
+      "price": 0.08,
+      "isLow": true,
+      "isMid": false,
+      "isHigh": false
+    },
+    {
+      "hour": 4,
+      "price": 0.08,
+      "isLow": true,
+      "isMid": false,
+      "isHigh": false
+    },
+    {
+      "hour": 5,
+      "price": 0.08,
+      "isLow": true,
+      "isMid": false,
+      "isHigh": false
+    },
+    {
+      "hour": 6,
+      "price": 0.08,
+      "isLow": true,
+      "isMid": false,
+      "isHigh": false
+    },
+    {
+      "hour": 7,
+      "price": 0.12,
+      "isLow": false,
+      "isMid": true,
+      "isHigh": false
+    },
+    {
+      "hour": 8,
+      "price": 0.12,
+      "isLow": false,
+      "isMid": true,
+      "isHigh": false
+    },
+    {
+      "hour": 9,
+      "price": 0.12,
+      "isLow": false,
+      "isMid": true,
+      "isHigh": false
+    },
+    {
+      "hour": 10,
+      "price": 0.12,
+      "isLow": false,
+      "isMid": true,
+      "isHigh": false
+    },
+    {
+      "hour": 11,
+      "price": 0.12,
+      "isLow": false,
+      "isMid": true,
+      "isHigh": false
+    },
+    {
+      "hour": 12,
+      "price": 0.12,
+      "isLow": false,
+      "isMid": true,
+      "isHigh": false
+    },
+    {
+      "hour": 13,
+      "price": 0.12,
+      "isLow": false,
+      "isMid": true,
+      "isHigh": false
+    },
+    {
+      "hour": 14,
+      "price": 0.07,
+      "isLow": true,
+      "isMid": false,
+      "isHigh": false
+    },
+    {
+      "hour": 15,
+      "price": 0.07,
+      "isLow": true,
+      "isMid": false,
+      "isHigh": false
+    },
+    {
+      "hour": 16,
+      "price": 0.07,
+      "isLow": true,
+      "isMid": false,
+      "isHigh": false
+    },
+    {
+      "hour": 17,
+      "price": 0.07,
+      "isLow": true,
+      "isMid": false,
+      "isHigh": false
+    },
+    {
+      "hour": 18,
+      "price": 0.12,
+      "isLow": false,
+      "isMid": true,
+      "isHigh": false
+    },
+    {
+      "hour": 19,
+      "price": 0.22,
+      "isLow": false,
+      "isMid": false,
+      "isHigh": true
+    },
+    {
+      "hour": 20,
+      "price": 0.22,
+      "isLow": false,
+      "isMid": false,
+      "isHigh": true
+    },
+    {
+      "hour": 21,
+      "price": 0.22,
+      "isLow": false,
+      "isMid": false,
+      "isHigh": true
+    },
+    {
+      "hour": 22,
+      "price": 0.22,
+      "isLow": false,
+      "isMid": false,
+      "isHigh": true
+    },
+    {
+      "hour": 23,
+      "price": 0.12,
+      "isLow": false,
+      "isMid": true,
+      "isHigh": false
+    }
+  ],
+  "summary": {
+    "min": 0.07,
+    "max": 0.22,
+    "avg": 0.11667
+  }
+}
