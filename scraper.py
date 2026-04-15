@@ -1,84 +1,103 @@
 import requests
 import json
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 
 def scrape_electricity_prices():
-    # Use a reliable public API for PVPC (Spain)
-    # Falling back to different sources if one fails
-    urls = [
-        "https://api.preciodelaluz.org/v1/prices/all?zone=PCB",
-        "https://api.esios.ree.es/indicators/1001" # This might need a token, but let's check
-    ]
+    # Official ESIOS (REE) API for PVPC (Spain)
+    # Archive 70 contains the aggregated PVPC prices (with taxes)
+    date_str = datetime.now().strftime("%Y-%m-%d")
+    url = f"https://api.esios.ree.es/archives/70/download_json?date={date_str}"
     
     data = None
     
-    # Try the simplest API first
     try:
-        response = requests.get(urls[0], timeout=10)
+        print(f"Fetching data from official ESIOS API: {url}")
+        response = requests.get(url, timeout=15)
         if response.status_code == 200:
             raw_data = response.json()
-            # Standardize the data structure for our frontend
-            # structure: { "HH": { "price": float, "units": "€/MWh" or "€/kWh", "isLow": bool, "isMid": bool, "isHigh": bool } }
-            # preciodelaluz.org returns data per hour key "HH-HH"
-            standardized = []
-            for key, val in raw_data.items():
-                hour_start = int(key.split('-')[0])
-                price_mwh = val['price'] # Usually in €/MWh or €/kWh depending on API version
-                # Usually preciodelaluz.org returns €/MWh
-                price_kwh = price_mwh / 1000 if price_mwh > 1 else price_mwh
+            pvpc_list = raw_data.get('PVPC', [])
+            
+            if not pvpc_list:
+                raise ValueError("No data found in ESIOS response")
                 
+            standardized = []
+            prices_list = []
+            
+            for item in pvpc_list:
+                # Hour format from ESIOS is "HH-HH"
+                hour_start = int(item['Hora'].split('-')[0])
+                # Price is in €/MWh in the field "PCB" (Peninsula, Canarias, Baleares)
+                # We need to replace comma with dot for float conversion
+                price_str = item['PCB'].replace(',', '.')
+                price_mwh = float(price_str)
+                price_kwh = price_mwh / 1000
+                
+                prices_list.append(price_kwh)
                 standardized.append({
                     "hour": hour_start,
                     "price": round(price_kwh, 5),
-                    "isLow": val.get('is-low', False),
-                    "isMid": val.get('is-mid', False),
-                    "isHigh": val.get('is-high', False)
+                    # We will calculate flags after getting min/max
+                    "isLow": False,
+                    "isMid": False,
+                    "isHigh": False
                 })
             
+            # Calculate thresholds for aesthetics (matching tarifaluzhora.es feel)
+            min_p = min(prices_list)
+            max_p = max(prices_list)
+            range_p = max_p - min_p
+            
+            # 33% chunks for low/mid/high
+            low_threshold = min_p + (range_p * 0.33)
+            high_threshold = min_p + (range_p * 0.66)
+            
+            for item in standardized:
+                if item['price'] <= low_threshold:
+                    item['isLow'] = True
+                elif item['price'] >= high_threshold:
+                    item['isHigh'] = True
+                else:
+                    item['isMid'] = True
+                    
             # Sort by hour
             standardized.sort(key=lambda x: x['hour'])
             data = standardized
+            
+        else:
+            print(f"ESIOS API failed with status {response.status_code}")
     except Exception as e:
-        print(f"API 1 failed: {e}")
+        print(f"Error fetching from ESIOS: {e}")
 
-    # Fallback to a mockup or another source if needed
+    # Fallback to a mock/old values only if everything fails completely
     if not data:
-        print("Using Fallback/Mockup data for demonstration (Simulated PVPC)")
-        # In a real environment, we'd add more fallback logic here
-        data = []
-        for h in range(24):
-            # Mock curve: cheaper at night and afternoon, expensive at evening
-            base = 0.12
-            if 0 <= h <= 6: base = 0.08
-            if 14 <= h <= 17: base = 0.07
-            if 19 <= h <= 22: base = 0.22
-            data.append({
-                "hour": h,
-                "price": round(base, 5),
-                "isLow": base < 0.1,
-                "isMid": 0.1 <= base <= 0.18,
-                "isHigh": base > 0.18
-            })
+        print("Scraping failed. No data to save.")
+        return
 
-    # Metadata
+    # Metadata and Summary
     result = {
         "last_updated": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         "prices": data,
         "summary": {
-            "min": min(p['price'] for p in data),
-            "max": max(p['price'] for p in data),
+            "min": round(min(p['price'] for p in data), 5),
+            "max": round(max(p['price'] for p in data), 5),
             "avg": round(sum(p['price'] for p in data) / len(data), 5)
         }
     }
 
-    # Ensure directory exists
-    os.makedirs('LuzMerida/docs/data', exist_ok=True)
+    # Ensure output directory exists
+    # If running in GitHub Actions, it might be docs/data
+    output_path = 'docs/data/luz.json'
+    if not os.path.exists('docs'):
+        # Fallback for different execution contexts
+        output_path = 'LuzMerida/docs/data/luz.json'
     
-    with open('LuzMerida/docs/data/luz.json', 'w', encoding='utf-8') as f:
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    
+    with open(output_path, 'w', encoding='utf-8') as f:
         json.dump(result, f, indent=2, ensure_ascii=False)
     
-    print("Scraper successfully updated LuzMerida/docs/data/luz.json")
+    print(f"Successfully updated {output_path}")
 
 if __name__ == "__main__":
     scrape_electricity_prices()
