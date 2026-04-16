@@ -21,7 +21,8 @@
       --border: #e5e7eb;
       --primary: #111827;
       --secondary: #6b7280;
-      --accent: #b48e4b; /* Dorado Mérida */
+      --accent: #b48e4b;
+      /* Dorado Mérida */
       --clr-low: #16a34a;
       --clr-mid: #d97706;
       --clr-high: #dc2626;
@@ -31,7 +32,11 @@
       --max-w: 1100px;
     }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
     body {
       font-family: 'Inter', sans-serif;
@@ -88,7 +93,11 @@
       color: var(--secondary);
     }
 
-    .nav-links { display: flex; gap: 1.25rem; }
+    .nav-links {
+      display: flex;
+      gap: 1.25rem;
+    }
+
     .nav-links a {
       font-size: .8rem;
       font-weight: 600;
@@ -96,7 +105,10 @@
       color: var(--secondary);
       transition: color .2s;
     }
-    .nav-links a:hover { color: var(--primary); }
+
+    .nav-links a:hover {
+      color: var(--primary);
+    }
 
     /* ── HERO ── */
     .hero-section {
@@ -254,8 +266,11 @@
       font-size: .95rem;
     }
 
-    .hour-label { font-weight: 700; color: var(--primary); }
-    
+    .hour-label {
+      font-weight: 700;
+      color: var(--primary);
+    }
+
     .price-tag {
       font-weight: 600;
       padding: .25rem .75rem;
@@ -263,46 +278,66 @@
       font-size: .85rem;
     }
 
-    .price-tag.low { background: #ecfdf5; color: var(--clr-low); }
-    .price-tag.mid { background: #fffbeb; color: var(--clr-mid); }
-    .price-tag.high { background: #fef2f2; color: var(--clr-high); }
+    .price-tag.low {
+      background: #ecfdf5;
+      color: var(--clr-low);
+    }
+
+    .price-tag.mid {
+      background: #fffbeb;
+      color: var(--clr-mid);
+    }
+
+    .price-tag.high {
+      background: #fef2f2;
+      color: var(--clr-high);
+    }
 
     /* ── FOOTER ── */
     .site-footer {
       text-align: center;
-      padding: 40px;
+      padding: 60px 20px;
       border-top: 1px solid var(--border);
-      margin-top: 40px;
       background: var(--surface);
+      margin-top: 60px;
     }
 
     .footer-brand {
-      font-family: 'Playfair Display', serif;
-      font-size: 1rem;
+      font-size: 1.1rem;
       font-weight: 700;
-      color: var(--primary);
-      margin-bottom: 15px;
+      color: #334155;
+      margin-bottom: 12px;
       display: block;
     }
 
     .footer-desc {
-      font-size: 0.85rem;
-      color: var(--secondary);
-      max-width: 700px;
-      margin: 0 auto 20px auto;
+      font-size: 0.9rem;
+      color: #64748b;
+      max-width: 800px;
+      margin: 0 auto 20px;
       line-height: 1.6;
     }
 
-    .footer-credits { font-size: 0.95rem; color: var(--primary); }
+    .footer-credits {
+      font-size: 1rem;
+      color: #334155;
+      margin-top: 20px;
+    }
+
     .footer-credits a {
       color: var(--accent);
       text-decoration: none;
-      font-weight: 600;
+      font-weight: 700;
     }
 
     @media (max-width: 768px) {
-      .hero-section { padding-top: 2rem; }
-      .kpi-row { grid-template-columns: 1fr; }
+      .hero-section {
+        padding-top: 2rem;
+      }
+
+      .kpi-row {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
@@ -318,8 +353,9 @@
       <nav class="nav-links">
         <a href="https://fud0dev.github.io/AgendaMerida/">Noticias</a>
         <a href="https://fud0dev.github.io/ADMerida/">Deportes</a>
-        <a href="https://fud0dev.github.io/InflacionMerida/">Precios</a>
         <a href="https://fud0dev.github.io/EmpleoMerida/">Empleo</a>
+        <a href="https://fud0dev.github.io/ViviendaMerida/">Viviendas</a>
+        <a href="https://fud0dev.github.io/InflacionMerida/">Precios</a>
       </nav>
     </div>
   </header>
@@ -332,7 +368,7 @@
   </section>
 
   <main class="main-grid">
-    
+
     <!-- KPIs -->
     <div class="kpi-row">
       <div class="kpi-card highlight" id="kpi-now">
@@ -381,8 +417,7 @@
   <footer class="site-footer">
     <span class="footer-brand">Luz Mérida &copy; 2026</span>
     <p class="footer-desc">
-      Aviso Legal: Proyecto desarrollado exclusivamente con fines educativos y de difusión cultural. Toda la
-      información pertenece a sus respectivos autores y fuentes oficiales (REE/ESIOS).
+      Aviso Legal: Proyecto desarrollado exclusivamente con fines educativos y de difusión cultural. Toda la información pertenece a sus respectivos autores y fuentes oficiales (REE/ESIOS).
     </p>
     <p class="footer-credits">
       Creado por <a href="https://github.com/fud0dev" target="_blank">fud0dev</a>
@@ -397,7 +432,7 @@
       try {
         const res = await fetch('data/luz.json?' + Date.now());
         g_data = await res.json();
-        
+
         renderDashboard();
         renderChart();
       } catch (e) {
@@ -409,10 +444,10 @@
     function renderDashboard() {
       const now = new Date();
       const currentHour = now.getHours();
-      
+
       const prices = g_data.prices;
       const hourData = prices.find(p => p.hour === currentHour) || prices[0];
-      
+
       document.getElementById('val-now').innerHTML = `${hourData.price.toFixed(4)}<sub> €/kWh</sub>`;
       document.getElementById('val-min').innerHTML = `${g_data.summary.min.toFixed(4)}<sub> €/kWh</sub>`;
       document.getElementById('val-max').innerHTML = `${g_data.summary.max.toFixed(4)}<sub> €/kWh</sub>`;
@@ -423,7 +458,7 @@
         const isCurrent = p.hour === currentHour;
         const tagCls = p.isLow ? 'low' : p.isHigh ? 'high' : 'mid';
         const label = p.isLow ? 'Barata' : p.isHigh ? 'Cara' : 'Normal';
-        
+
         return `
           <tr style="${isCurrent ? 'background: rgba(180, 142, 75, 0.05)' : ''}">
             <td class="hour-label">${p.hour}:00 - ${p.hour}:59 ${isCurrent ? '⭐' : ''}</td>
@@ -438,7 +473,7 @@
       const ctx = document.getElementById('priceChart').getContext('2d');
       const labels = g_data.prices.map(p => `${p.hour}h`);
       const prices = g_data.prices.map(p => p.price);
-      
+
       if (g_chart) g_chart.destroy();
 
       g_chart = new Chart(ctx, {
@@ -464,7 +499,7 @@
           maintainAspectRatio: false,
           plugins: { legend: { display: false } },
           scales: {
-            y: { 
+            y: {
               beginAtZero: false,
               grid: { color: '#f0f0f0' },
               ticks: { callback: v => v.toFixed(2) + ' €' }
@@ -478,4 +513,5 @@
     init();
   </script>
 </body>
+
 </html>
