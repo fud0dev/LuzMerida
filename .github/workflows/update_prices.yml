@@ -1,7 +1,7 @@
 name: Update Electricity Prices
 on:
   schedule:
-    - cron: '0 */6 * * *' # Se ejecuta cada 6 horas
+    - cron: '0 1 * * *' # Se ejecuta una vez al día a la 01:00 AM UTC
   workflow_dispatch:
 permissions:
   contents: write
