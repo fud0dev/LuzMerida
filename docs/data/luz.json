@@ -1,178 +1,178 @@
 {
-  "last_updated": "2026-05-12 04:32:02",
+  "last_updated": "2026-05-13 04:38:51",
   "prices": [
     {
       "hour": 0,
-      "price": 0.13663,
+      "price": 0.12873,
       "isLow": false,
       "isMid": true,
       "isHigh": false
     },
     {
       "hour": 1,
-      "price": 0.13527,
+      "price": 0.12755,
       "isLow": false,
       "isMid": true,
       "isHigh": false
     },
     {
       "hour": 2,
-      "price": 0.1308,
+      "price": 0.12963,
       "isLow": false,
       "isMid": true,
       "isHigh": false
     },
     {
       "hour": 3,
-      "price": 0.13002,
+      "price": 0.12894,
       "isLow": false,
       "isMid": true,
       "isHigh": false
     },
     {
       "hour": 4,
-      "price": 0.13069,
+      "price": 0.13058,
       "isLow": false,
       "isMid": true,
       "isHigh": false
     },
     {
       "hour": 5,
-      "price": 0.13294,
+      "price": 0.13163,
       "isLow": false,
       "isMid": true,
       "isHigh": false
     },
     {
       "hour": 6,
-      "price": 0.15434,
+      "price": 0.12408,
       "isLow": false,
       "isMid": true,
       "isHigh": false
     },
     {
       "hour": 7,
-      "price": 0.1723,
+      "price": 0.13369,
       "isLow": false,
       "isMid": true,
       "isHigh": false
     },
     {
       "hour": 8,
-      "price": 0.18878,
-      "isLow": false,
-      "isMid": false,
-      "isHigh": true
-    },
-    {
-      "hour": 9,
-      "price": 0.15429,
+      "price": 0.14025,
       "isLow": false,
       "isMid": true,
       "isHigh": false
     },
     {
+      "hour": 9,
+      "price": 0.07436,
+      "isLow": true,
+      "isMid": false,
+      "isHigh": false
+    },
+    {
       "hour": 10,
-      "price": 0.15816,
+      "price": 0.1271,
       "isLow": false,
       "isMid": true,
       "isHigh": false
     },
     {
       "hour": 11,
-      "price": 0.13077,
+      "price": 0.12708,
       "isLow": false,
       "isMid": true,
       "isHigh": false
     },
     {
       "hour": 12,
-      "price": 0.12705,
+      "price": 0.12714,
       "isLow": false,
       "isMid": true,
       "isHigh": false
     },
     {
       "hour": 13,
-      "price": 0.11257,
-      "isLow": true,
-      "isMid": false,
+      "price": 0.12692,
+      "isLow": false,
+      "isMid": true,
       "isHigh": false
     },
     {
       "hour": 14,
-      "price": 0.04195,
+      "price": 0.05862,
       "isLow": true,
       "isMid": false,
       "isHigh": false
     },
     {
       "hour": 15,
-      "price": 0.04091,
+      "price": 0.05949,
       "isLow": true,
       "isMid": false,
       "isHigh": false
     },
     {
       "hour": 16,
-      "price": 0.04123,
+      "price": 0.05971,
       "isLow": true,
       "isMid": false,
       "isHigh": false
     },
     {
       "hour": 17,
-      "price": 0.04339,
+      "price": 0.05918,
       "isLow": true,
       "isMid": false,
       "isHigh": false
     },
     {
       "hour": 18,
-      "price": 0.12265,
+      "price": 0.12964,
       "isLow": false,
       "isMid": true,
       "isHigh": false
     },
     {
       "hour": 19,
-      "price": 0.16818,
+      "price": 0.1683,
       "isLow": false,
       "isMid": true,
       "isHigh": false
     },
     {
       "hour": 20,
-      "price": 0.2472,
+      "price": 0.22943,
       "isLow": false,
       "isMid": false,
       "isHigh": true
     },
     {
       "hour": 21,
-      "price": 0.2641,
+      "price": 0.25608,
       "isLow": false,
       "isMid": false,
       "isHigh": true
     },
     {
       "hour": 22,
-      "price": 0.19782,
+      "price": 0.17912,
       "isLow": false,
-      "isMid": false,
-      "isHigh": true
+      "isMid": true,
+      "isHigh": false
     },
     {
       "hour": 23,
-      "price": 0.17036,
+      "price": 0.16336,
       "isLow": false,
       "isMid": true,
       "isHigh": false
     }
   ],
   "summary": {
-    "min": 0.04091,
-    "max": 0.2641,
-    "avg": 0.13885
+    "min": 0.05862,
+    "max": 0.25608,
+    "avg": 0.13003
   }
 }
